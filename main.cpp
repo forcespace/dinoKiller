@@ -168,20 +168,20 @@ int main()
             {
                 if (TileMap[i][j] == ' ')
                 {
-                    s_map.setTextureRect(sf::IntRect(0, 0, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
+                    s_map.setTextureRect(sf::IntRect(0, 0, 32, 32));
                 }
                 if (TileMap[i][j] == 's')
                 {
-                    s_map.setTextureRect(sf::IntRect(32, 0, 32, 32));//если встретили символ s, то рисуем 2й квадратик
+                    s_map.setTextureRect(sf::IntRect(32, 0, 32, 32));
                 }
                 if (TileMap[i][j] == '0')
                 {
-                    s_map.setTextureRect(sf::IntRect(64, 0, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
+                    s_map.setTextureRect(sf::IntRect(64, 0, 32, 32));
                 }
 
-                s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
+                s_map.setPosition(j * 32, i * 32);
 
-                window.draw(s_map);//рисуем квадратики на экран
+                window.draw(s_map);
             }
 
         window.draw(dino.sprite);
