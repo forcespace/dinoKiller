@@ -11,7 +11,7 @@ iostream
 -
 SFML/Graphics.hpp
 -
-filesystem
+sstream
 -
 src/map.h
 /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/map.h
