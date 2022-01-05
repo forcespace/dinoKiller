@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/dinoKiller.dir/main.cpp.o"
+  "CMakeFiles/dinoKiller.dir/main.cpp.o.d"
   "dinoKiller"
   "dinoKiller.pdb"
 )
