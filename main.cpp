@@ -16,13 +16,13 @@ public:
 
     int w, h, health;
 
-    bool life, isMove, onGround;
+    bool life, onGround;
 
     sf::Texture texture;
     sf::Sprite sprite;
     sf::String name;//враги могут быть разные, мы не будем делать другой класс для врага.всего лишь различим врагов по имени и дадим каждому свое действие в update в зависимости от имени
 
-    Entity(sf::Image &image, float X, float Y, int W, int H, sf::String Name)
+    Entity(sf::Image &image, float X, float Y, int W, int H, const sf::String &Name)
     {
         x = X;
         y = Y;
@@ -36,7 +36,6 @@ public:
         dy = 0;
         life = true;
         onGround = false;
-        isMove = false;
         texture.loadFromImage(image);
         sprite.setTexture(texture);
         sprite.setOrigin(w / 2, h / 2);
@@ -60,7 +59,7 @@ public:
 
     stateObject state;
 
-    Player(sf::Image &image, float X, float Y,int W,int H,const sf::String& Name) : Entity(image, X, Y, W, H, Name)
+    Player(sf::Image &image, float X, float Y, int W, int H, const sf::String &Name) : Entity(image, X, Y, W, H, Name)
     {
         state = stay;
 
@@ -76,23 +75,23 @@ public:
         {
             state = left;
             speed = 0.1;
-////                currentFrame += 0.011 * time;
-////                if (currentFrame > 4)
-////                {
-////                    currentFrame -= 2;
-////                }
-////                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
+//                currentFrame += 0.011 * time;
+//                if (currentFrame > 4)
+//                {
+//                    currentFrame -= 2;
+//                }
+//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             state = right;
             speed = 0.1;
-////                currentFrame += 0.011 * time;
-////                if (currentFrame > 4)
-////                {
-////                    currentFrame -= 2;
-////                }
-////                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
+//                currentFrame += 0.011 * time;
+//                if (currentFrame > 4)
+//                {
+//                    currentFrame -= 2;
+//                }
+//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround))
@@ -255,6 +254,71 @@ public:
 //    }
 };
 
+class Enemy : public Entity
+{
+public:
+    Enemy(sf::Image &image, float X, float Y, int W, int H, const sf::String& Name) : Entity(image, X, Y, W, H, Name)
+    {
+        if (name == "EasyEnemy")
+        {
+            sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+            dx = 0.1;//даем скорость.этот объект всегда двигается
+        }
+    }
+
+    void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
+    {
+        for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
+        {
+            for (int j = x / 32; j < (x + w) / 32; j++)
+            {
+                if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+                {
+                    if (Dy > 0)
+                    {
+                        y = i * 32 - h;
+                    }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
+
+                    if (Dy < 0)
+                    {
+                        y = i * 32 + 32;
+                    }//столкновение с верхними краями карты(может и не пригодиться)
+
+                    if (Dx > 0)
+                    {
+                        x = j * 32 - w;
+                        dx = -0.1;
+                        sprite.scale(-1, 1);
+                    }//с правым краем карты
+
+                    if (Dx < 0)
+                    {
+                        x = j * 32 + 32;
+                        dx = 0.1;
+                        sprite.scale(-1, 1);
+                    }// с левым краем карты
+                }
+            }
+        }
+    }
+
+    void update(float time)
+    {
+        if (name == "EasyEnemy")
+        {//для персонажа с таким именем логика будет такой
+            //moveTimer += time;if (moveTimer>3000){ dx *= -1; moveTimer = 0; }//меняет направление примерно каждые 3 сек
+            checkCollisionWithMap(dx, dy);//обрабатываем столкновение по Х
+            x += dx * time;
+            sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта в место его центра
+
+            if (health <= 0)
+            {
+                life = false;
+            }
+        }
+    }
+};
+
 int main()
 {
     randomMapGenerate();
@@ -282,8 +346,11 @@ int main()
     sf::Image heroImage;
     heroImage.loadFromFile("upload/images/hero.png");
 
-    Player dino(heroImage, 150, 250, 88, 94, "Player1");
-//    Player dino("hero.png", 150, 250, 88, 94);
+    sf::Image easyEnemyImage;
+    easyEnemyImage.loadFromFile("upload/images/cactus.png");
+
+    Player dino(heroImage, 50, 750, 88, 94, "Player1");
+    Enemy easyEnemy(easyEnemyImage, 850, 693, 55, 74, "EasyEnemy");
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
@@ -309,6 +376,7 @@ int main()
         gameTime = gameTimeClock.getElapsedTime().asSeconds();
 
         dino.update(time);
+        easyEnemy.update(time);
         window.setView(view);
         window.clear();
 
@@ -357,10 +425,13 @@ int main()
                 scoreText.setPosition(view.getCenter().x + (float) CAM_WIDTH / 2 - 250, view.getCenter().y - (float) CAM_HEIGHT / 2 + 20);
             }
 
+        window.draw(easyEnemy.sprite);
         window.draw(dino.sprite);
         window.draw(healthText);
         window.draw(timeText);
         window.draw(scoreText);
         window.display();
     }
+
+    return 0;
 }
