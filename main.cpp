@@ -9,14 +9,43 @@ constexpr unsigned WINDOW_HEIGHT = 1080;
 constexpr unsigned CAM_WIDTH = 1200;
 constexpr unsigned CAM_HEIGHT = 674;
 
-class Player
+class Entity
 {
-private:
-    float x, y = 0;
 public:
-    float w, h, dx{}, dy{}, speed = 0;
-    int score, health = 0;
+    float dx, dy, x, y, speed, moveTimer;//добавили переменную таймер для будущих целей
+
+    int w, h, health;
+
     bool life, onGround;
+
+    sf::Texture texture;
+    sf::Sprite sprite;
+    sf::String name;//враги могут быть разные, мы не будем делать другой класс для врага.всего лишь различим врагов по имени и дадим каждому свое действие в update в зависимости от имени
+
+    Entity(sf::Image &image, float X, float Y, int W, int H, const sf::String &Name)
+    {
+        x = X;
+        y = Y;
+        w = W;
+        h = H;
+        name = Name;
+        moveTimer = 0;
+        speed = 0;
+        health = 100;
+        dx = 0;
+        dy = 0;
+        life = true;
+        onGround = false;
+        texture.loadFromImage(image);
+        sprite.setTexture(texture);
+        sprite.setOrigin(w / 2, h / 2);
+    }
+};
+
+class Player : public Entity
+{
+
+public:
 
     enum stateObject
     {
@@ -30,35 +59,14 @@ public:
 
     stateObject state;
 
-    sf::String File;
-    sf::Image image;
-    sf::Texture texture;
-    sf::Sprite sprite;
-
-    Player(const sf::String &F, int X, int Y, float W, float H)
+    Player(sf::Image &image, float X, float Y, int W, int H, const sf::String &Name) : Entity(image, X, Y, W, H, Name)
     {
-        score = 0;
-        health = 100;
-
-        life = true;
-        onGround = false;
-
         state = stay;
 
-        File = F;
-        w = W;
-        h = H;
-
-        image.loadFromFile("upload/images/" + File);
-        image.createMaskFromColor(sf::Color(41, 33, 59));
-        texture.loadFromImage(image);
-        sprite.setTexture(texture);
-
-        x = X;
-        y = Y;
-
-        sprite.setTextureRect(sf::IntRect(0, 0, w, h));
-        sprite.setOrigin(w / 2, h / 2);
+        if (name == "Player1")
+        {
+            sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+        }
     }
 
     void control()
@@ -67,17 +75,23 @@ public:
         {
             state = left;
             speed = 0.1;
-            //currentFrame += 0.005*time;
-            //if (currentFrame > 3) currentFrame -= 3;
-            //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 135, 96, 54));
+//                currentFrame += 0.011 * time;
+//                if (currentFrame > 4)
+//                {
+//                    currentFrame -= 2;
+//                }
+//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             state = right;
             speed = 0.1;
-            //	currentFrame += 0.005*time;
-            //	if (currentFrame > 3) currentFrame -= 3;
-            //	p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 232, 96, 54));
+//                currentFrame += 0.011 * time;
+//                if (currentFrame > 4)
+//                {
+//                    currentFrame -= 2;
+//                }
+//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround))
@@ -85,22 +99,26 @@ public:
             state = jump;
             dy = -0.5;
             onGround = false;//то состояние равно прыжок,прыгнули и сообщили, что мы не на земле
-            //currentFrame += 0.005*time;
-            //if (currentFrame > 3) currentFrame -= 3;
-            //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 307, 96, 96));
+////                currentFrame += 0.011 * time;
+////                if (currentFrame > 4)
+////                {
+////                    currentFrame -= 2;
+////                }
+////                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             state = down;
             speed = 0.1;
-
-            //currentFrame += 0.005*time;
-            //if (currentFrame > 3) currentFrame -= 3;
-            //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 0, 96, 96));
+////                currentFrame += 0.011 * time;
+////                if (currentFrame > 4)
+////                {
+////                    currentFrame -= 2;
+////                }
+////                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
     }
-
 
     void update(float time)
     {
@@ -124,13 +142,14 @@ public:
                 break;//и здесь тоже
         }
 
+        speed = 0;
+
         x += dx * time;
         checkCollisionWithMap(dx, 0);//обрабатываем столкновение по Х
 
         y += dy * time;
         checkCollisionWithMap(0, dy);//обрабатываем столкновение по Y
 
-        speed = 0;
         sprite.setPosition(x + w / 2, y + h / 2);
 
         if (health <= 0)
@@ -138,17 +157,12 @@ public:
             life = false;
         }
 
+        if (life)
+        {
+            getPlayerCoordinateForView(x, y);
+        }
+
         dy = dy + 0.0015 * time;//делаем притяжение к земле
-    }
-
-    float getPlayerCoordinateX()
-    {
-        return x;
-    }
-
-    float getPlayerCoordinateY()
-    {
-        return y;
     }
 
     void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
@@ -240,6 +254,71 @@ public:
 //    }
 };
 
+class Enemy : public Entity
+{
+public:
+    Enemy(sf::Image &image, float X, float Y, int W, int H, const sf::String& Name) : Entity(image, X, Y, W, H, Name)
+    {
+        if (name == "EasyEnemy")
+        {
+            sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+            dx = 0.1;//даем скорость.этот объект всегда двигается
+        }
+    }
+
+    void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
+    {
+        for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
+        {
+            for (int j = x / 32; j < (x + w) / 32; j++)
+            {
+                if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+                {
+                    if (Dy > 0)
+                    {
+                        y = i * 32 - h;
+                    }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
+
+                    if (Dy < 0)
+                    {
+                        y = i * 32 + 32;
+                    }//столкновение с верхними краями карты(может и не пригодиться)
+
+                    if (Dx > 0)
+                    {
+                        x = j * 32 - w;
+                        dx = -0.1;
+                        sprite.scale(-1, 1);
+                    }//с правым краем карты
+
+                    if (Dx < 0)
+                    {
+                        x = j * 32 + 32;
+                        dx = 0.1;
+                        sprite.scale(-1, 1);
+                    }// с левым краем карты
+                }
+            }
+        }
+    }
+
+    void update(float time)
+    {
+        if (name == "EasyEnemy")
+        {//для персонажа с таким именем логика будет такой
+            //moveTimer += time;if (moveTimer>3000){ dx *= -1; moveTimer = 0; }//меняет направление примерно каждые 3 сек
+            checkCollisionWithMap(dx, dy);//обрабатываем столкновение по Х
+            x += dx * time;
+            sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта в место его центра
+
+            if (health <= 0)
+            {
+                life = false;
+            }
+        }
+    }
+};
+
 int main()
 {
     randomMapGenerate();
@@ -264,9 +343,15 @@ int main()
     sf::Sprite s_map;
     s_map.setTexture(map);
 
-    Player dino("hero.png", 150, 250, 88, 94);
+    sf::Image heroImage;
+    heroImage.loadFromFile("upload/images/hero.png");
 
-    double currentFrame = 0;
+    sf::Image easyEnemyImage;
+    easyEnemyImage.loadFromFile("upload/images/cactus.png");
+
+    Player dino(heroImage, 50, 750, 88, 94, "Player1");
+    Enemy easyEnemy(easyEnemyImage, 850, 693, 55, 74, "EasyEnemy");
+
     sf::Clock clock;
     sf::Clock gameTimeClock;
     int gameTime = 0;
@@ -274,11 +359,6 @@ int main()
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
-
-        if (dino.life)
-        {
-            gameTime = gameTimeClock.getElapsedTime().asSeconds();
-        }
 
         clock.restart();
         time = time / 800;
@@ -293,59 +373,10 @@ int main()
             }
         }
 
-        if (dino.life)
-        {
-
-//            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-//            {
-//                dino.dir = 3;
-//                dino.speed = 0.1;
-//                currentFrame += 0.011 * time;
-//                if (currentFrame > 4)
-//                {
-//                    currentFrame -= 2;
-//                }
-//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-//            }
-//            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-//            {
-//                dino.dir = 0;
-//                dino.speed = 0.1;
-//                currentFrame += 0.011 * time;
-//                if (currentFrame > 4)
-//                {
-//                    currentFrame -= 2;
-//                }
-//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-//            }
-//            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-//            {
-//                dino.dir = 2;
-//                dino.speed = 0.1;
-//                currentFrame += 0.011 * time;
-//                if (currentFrame > 4)
-//                {
-//                    currentFrame -= 2;
-//                }
-//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-//            }
-//            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-//            {
-//                dino.dir = 1;
-//                dino.speed = 0.1;
-//                currentFrame += 0.011 * time;
-//                if (currentFrame > 4)
-//                {
-//                    currentFrame -= 2;
-//                }
-//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-//            }
-
-
-            getPlayerCoordinateForView(dino.getPlayerCoordinateX(), dino.getPlayerCoordinateY());
-        }
+        gameTime = gameTimeClock.getElapsedTime().asSeconds();
 
         dino.update(time);
+        easyEnemy.update(time);
         window.setView(view);
         window.clear();
 
@@ -384,7 +415,7 @@ int main()
 
                 std::ostringstream gameHealthString, gameTimeString, gameScoreString;
                 gameHealthString << dino.health;
-                gameScoreString << dino.score;
+//                gameScoreString << dino.score;
                 gameTimeString << gameTime;
                 healthText.setString("Health: " + gameHealthString.str());
                 healthText.setPosition(view.getCenter().x + (float) CAM_WIDTH / 2 - 125, view.getCenter().y - (float) CAM_HEIGHT / 2 + 20);
@@ -394,10 +425,13 @@ int main()
                 scoreText.setPosition(view.getCenter().x + (float) CAM_WIDTH / 2 - 250, view.getCenter().y - (float) CAM_HEIGHT / 2 + 20);
             }
 
+        window.draw(easyEnemy.sprite);
         window.draw(dino.sprite);
         window.draw(healthText);
         window.draw(timeText);
         window.draw(scoreText);
         window.display();
     }
+
+    return 0;
 }
