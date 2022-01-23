@@ -4,6 +4,7 @@
 #include "src/map.h"
 #include "src/view.h"
 #include "src/level.h"
+#include "src/LifeBar.h"
 #include <vector>
 #include <list>
 
@@ -310,6 +311,8 @@ int main()
     sf::Clock gameTimeClock;
     int gameTime = 0;
 
+    LifeBar lifeBarPlayer;
+
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
@@ -326,6 +329,9 @@ int main()
                 window.close();
             }
         }
+
+        lifeBarPlayer.update(100);//сюда передаем значение, которое надо нарисовать. Можно передать здоровья игрока тогда будет lifeBarPlayer.update(player.getHealth()); так
+
 
         dino.update(time);
 
@@ -379,6 +385,7 @@ int main()
         }
 
 //        window.draw(easyEnemy.sprite);
+        lifeBarPlayer.draw(window);//рисуем полоску здоровья
         window.draw(dino.sprite);
         window.display();
     }
