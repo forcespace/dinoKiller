@@ -14,7 +14,7 @@ constexpr unsigned CAM_NEW_HEIGHT = 1080;
 
 sf::View view;
 
-void getPlayerCoordinateForView(float x, float y)
+sf::View getPlayerCoordinateForView(float x, float y)
 {
     float tempX = x;
     float tempY = y;
@@ -32,7 +32,14 @@ void getPlayerCoordinateForView(float x, float y)
 //        tempY = 57;
 //    }
 
+    if (y > 624)
+    {
+        tempY = 624;
+    }
+
     view.setCenter(tempX, tempY);
+
+    return view;
 }
 
 #endif //PROJECT_ACTIVITIES_VIEW_H

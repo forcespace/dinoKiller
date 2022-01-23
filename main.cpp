@@ -9,8 +9,8 @@
 
 constexpr unsigned WINDOW_WIDTH = 1920;
 constexpr unsigned WINDOW_HEIGHT = 1080;
-constexpr unsigned CAM_WIDTH = 1200;
-constexpr unsigned CAM_HEIGHT = 674;
+constexpr unsigned CAM_WIDTH = WINDOW_WIDTH;
+constexpr unsigned CAM_HEIGHT = WINDOW_HEIGHT;
 
 class Entity
 {
@@ -46,6 +46,8 @@ public:
     {//ф-ция получения прямоугольника. его коорд,размеры (шир,высот).
         return sf::FloatRect(x, y, w, h);//эта ф-ция нужна для проверки столкновений
     }
+
+    virtual void update(float time) = 0;
 };
 
 class Player : public Entity
@@ -202,7 +204,7 @@ public:
     {
         obj = lvl.GetObjects("solid");//инициализируем.получаем нужные объекты для взаимодействия врага с картой
 
-        if (name == "EasyEnemy")
+        if (name == "easyEnemy")
         {
             sprite.setTextureRect(sf::IntRect(0, 0, w, h));
             dx = 0.1;//даем скорость.этот объект всегда двигается
@@ -246,7 +248,7 @@ public:
 
     void update(float time)
     {
-        if (name == "EasyEnemy")
+        if (name == "easyEnemy")
         {//для персонажа с таким именем логика будет такой
             //moveTimer += time;if (moveTimer>3000){ dx *= -1; moveTimer = 0; }//меняет направление примерно каждые 3 сек
             checkCollisionWithMap(dx, dy);//обрабатываем столкновение по Х
@@ -287,11 +289,21 @@ int main()
     sf::Image easyEnemyImage;
     easyEnemyImage.loadFromFile("upload/images/cactus.png");
 
-    Object player = lvl.GetObject("player");//объект игрока на нашей карте.задаем координаты игроку в начале при помощи него
-    Object easyEnemyObject = lvl.GetObject("easyEnemy");//объект легкого врага на нашей карте.задаем координаты игроку в начале при помощи него
+    std::list<Entity *> entities;//создаю список, сюда буду кидать объекты.например врагов.
+    std::list<Entity *>::iterator it;//итератор чтобы проходить по эл-там списка
 
-    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 88,94);//передаем координаты прямоугольника player из карты в координаты нашего игрока
-    Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 55,74);//передаем координаты прямоугольника easyEnemy из карты в координаты нашего врага
+    std::vector<Object> e = lvl.GetObjects("easyEnemy");//все объекты врага на tmx карте хранятся в этом векторе
+
+    for (int i = 0; i < e.size(); i++)//проходимся по элементам этого вектора(а именно по врагам)
+    {
+        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, e[i].rect.left, e[i].rect.top, 55, 74));//и закидываем в список всех наших врагов с карты
+    }
+
+    Object player = lvl.GetObject("player");//объект игрока на нашей карте.задаем координаты игроку в начале при помощи него
+//    Object easyEnemyObject = lvl.GetObject("easyEnemy");//объект легкого врага на нашей карте.задаем координаты игроку в начале при помощи него
+
+    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 88, 94);//передаем координаты прямоугольника player из карты в координаты нашего игрока
+//    Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 55,74);//передаем координаты прямоугольника easyEnemy из карты в координаты нашего врага
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
@@ -315,12 +327,24 @@ int main()
         }
 
         dino.update(time);
-        easyEnemy.update(time);
+
+        for (it = entities.begin(); it != entities.end(); it++)
+        {
+            (*it)->update(time);
+        }//для всех элементов списка(пока это только враги,но могут быть и пули к примеру) активируем ф-цию update
+
+        //easyEnemy.update(time);//старый вариант update врага
+
         window.setView(view);
         window.clear();
         lvl.Draw(window);//рисуем новую карту
 
-        window.draw(easyEnemy.sprite);
+        for (it = entities.begin(); it != entities.end(); it++)
+        {
+            window.draw((*it)->sprite); //рисуем entities объекты (сейчас это только враги)
+        }
+
+//        window.draw(easyEnemy.sprite);
         window.draw(dino.sprite);
         window.display();
     }
