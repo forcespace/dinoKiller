@@ -100,7 +100,7 @@ public:
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround))
         {
             state = jump;
-            dy = -0.5;
+            dy = -0.75;
             onGround = false;//то состояние равно прыжок,прыгнули и сообщили, что мы не на земле
 ////                currentFrame += 0.011 * time;
 ////                if (currentFrame > 4)
@@ -291,6 +291,7 @@ int main()
 
     std::list<Entity *> entities;//создаю список, сюда буду кидать объекты.например врагов.
     std::list<Entity *>::iterator it;//итератор чтобы проходить по эл-там списка
+    std::list<Entity *>::iterator it2;//второй итератор.для взаимодействия между объектами списка
 
     std::vector<Object> e = lvl.GetObjects("easyEnemy");//все объекты врага на tmx карте хранятся в этом векторе
 
@@ -334,6 +335,39 @@ int main()
         }//для всех элементов списка(пока это только враги,но могут быть и пули к примеру) активируем ф-цию update
 
         //easyEnemy.update(time);//старый вариант update врага
+
+        for (it = entities.begin(); it != entities.end(); it++)//проходимся по эл-там списка
+        {
+            if ((*it)->getRect().intersects(dino.getRect()))//если прямоугольник спрайта объекта пересекается с игроком
+            {
+                if ((*it)->name == "easyEnemy")
+                {//и при этом имя объекта EasyEnemy,то..
+                    if ((*it)->dx > 0)//если враг идет вправо
+                    {
+                        (*it)->x = dino.x - (*it)->w; //отталкиваем его от игрока влево (впритык)
+                        (*it)->dx = 0;//останавливаем
+                    }
+
+                    if ((*it)->dx < 0)//если враг идет влево
+                    {
+                        (*it)->x = dino.x + dino.w; //аналогично - отталкиваем вправо
+                        (*it)->dx = 0;//останавливаем
+                    }
+                }
+            }
+
+            for (it2 = entities.begin(); it2 != entities.end(); it2++)
+            {
+                if ((*it)->getRect() != (*it2)->getRect())
+                {//при этом это должны быть разные прямоугольники
+                    if (((*it)->getRect().intersects((*it2)->getRect())) && ((*it)->name == "easyEnemy") && ((*it2)->name == "easyEnemy"))//если столкнулись два объекта и они враги
+                    {
+                        (*it)->dx *= -1;//меняем направление движения врага
+                        (*it)->sprite.scale(-1, 1);//отражаем спрайт по горизонтали
+                    }
+                }
+            }
+        }
 
         window.setView(view);
         window.clear();
