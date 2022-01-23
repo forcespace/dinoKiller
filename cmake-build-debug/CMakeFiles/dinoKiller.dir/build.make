@@ -83,14 +83,78 @@ CMakeFiles/dinoKiller.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dinoKiller.dir/main.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/main.cpp -o CMakeFiles/dinoKiller.dir/main.cpp.s
 
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o: CMakeFiles/dinoKiller.dir/flags.make
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o: ../src/TinyXML/tinyxml.cpp
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o: CMakeFiles/dinoKiller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o -MF CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o.d -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o -c /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxml.cpp
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxml.cpp > CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.i
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxml.cpp -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.s
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o: CMakeFiles/dinoKiller.dir/flags.make
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o: ../src/TinyXML/tinystr.cpp
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o: CMakeFiles/dinoKiller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o -MF CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o.d -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o -c /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinystr.cpp
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinystr.cpp > CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.i
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinystr.cpp -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.s
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o: CMakeFiles/dinoKiller.dir/flags.make
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o: ../src/TinyXML/tinyxmlerror.cpp
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o: CMakeFiles/dinoKiller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o -MF CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o.d -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o -c /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlerror.cpp
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlerror.cpp > CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.i
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlerror.cpp -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.s
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o: CMakeFiles/dinoKiller.dir/flags.make
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o: ../src/TinyXML/tinyxmlparser.cpp
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o: CMakeFiles/dinoKiller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o -MF CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o.d -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o -c /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlparser.cpp
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlparser.cpp > CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.i
+
+CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlparser.cpp -o CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.s
+
 # Object files for target dinoKiller
 dinoKiller_OBJECTS = \
-"CMakeFiles/dinoKiller.dir/main.cpp.o"
+"CMakeFiles/dinoKiller.dir/main.cpp.o" \
+"CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o" \
+"CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o" \
+"CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o" \
+"CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o"
 
 # External object files for target dinoKiller
 dinoKiller_EXTERNAL_OBJECTS =
 
 dinoKiller: CMakeFiles/dinoKiller.dir/main.cpp.o
+dinoKiller: CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o
+dinoKiller: CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o
+dinoKiller: CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o
+dinoKiller: CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o
 dinoKiller: CMakeFiles/dinoKiller.dir/build.make
 dinoKiller: /usr/local/lib/libsfml-graphics.2.5.1.dylib
 dinoKiller: /usr/local/lib/libsfml-audio.2.5.1.dylib
@@ -98,7 +162,7 @@ dinoKiller: /usr/local/lib/libsfml-network.2.5.1.dylib
 dinoKiller: /usr/local/lib/libsfml-window.2.5.1.dylib
 dinoKiller: /usr/local/lib/libsfml-system.2.5.1.dylib
 dinoKiller: CMakeFiles/dinoKiller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable dinoKiller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable dinoKiller"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/dinoKiller.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

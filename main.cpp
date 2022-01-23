@@ -269,8 +269,7 @@ int main()
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
     Level lvl;//создали экземпляр класса уровень
-    lvl.LoadFromFile("src/map.tmx");//загрузили в него карту, внутри класса с помощью методов он ее обработает.
-
+    lvl.LoadFromFile("map.tmx");//загрузили в него карту, внутри класса с помощью методов он ее обработает.
 
     sf::Font font;
     font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");

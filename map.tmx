@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="16">
  <tileset firstgid="1" name="Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet" tilewidth="32" tileheight="32" tilecount="360" columns="60">
-  <image source="upload/images/Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet.png" width="1920" height="192"/>
+  <image source="Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet.png" width="1920" height="192"/>
  </tileset>
  <tileset firstgid="361" source="Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet.tsx"/>
  <layer id="1" name="Tile Layer 1" width="50" height="27">

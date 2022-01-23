@@ -11,7 +11,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "TinyXML/tinyxml.h"
-#include "tinyxml2/tinyxml2.h"
+//#include "tinyxml2/tinyxml2.h"
 
 struct Object
 {

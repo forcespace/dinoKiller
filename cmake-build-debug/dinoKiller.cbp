@@ -83,6 +83,24 @@
 		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/main.cpp">
 			<Option target="dinoKiller"/>
 		</Unit>
+		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinystr.cpp">
+			<Option target="dinoKiller"/>
+		</Unit>
+		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinystr.h">
+			<Option target="dinoKiller"/>
+		</Unit>
+		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxml.cpp">
+			<Option target="dinoKiller"/>
+		</Unit>
+		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxml.h">
+			<Option target="dinoKiller"/>
+		</Unit>
+		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlerror.cpp">
+			<Option target="dinoKiller"/>
+		</Unit>
+		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/src/TinyXML/tinyxmlparser.cpp">
+			<Option target="dinoKiller"/>
+		</Unit>
 		<Unit filename="/Users/sergey.pavlov/Documents/Projects/c++/dinoKiller/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
