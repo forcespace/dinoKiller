@@ -3,6 +3,9 @@
 #include <sstream>
 #include "src/map.h"
 #include "src/view.h"
+#include "src/level.h"
+#include <vector>
+#include <list>
 
 constexpr unsigned WINDOW_WIDTH = 1920;
 constexpr unsigned WINDOW_HEIGHT = 1080;
@@ -12,17 +15,15 @@ constexpr unsigned CAM_HEIGHT = 674;
 class Entity
 {
 public:
+    std::vector<Object> obj;//вектор объектов карты
     float dx, dy, x, y, speed, moveTimer;//добавили переменную таймер для будущих целей
-
     int w, h, health;
-
     bool life, onGround;
-
     sf::Texture texture;
     sf::Sprite sprite;
     sf::String name;//враги могут быть разные, мы не будем делать другой класс для врага.всего лишь различим врагов по имени и дадим каждому свое действие в update в зависимости от имени
 
-    Entity(sf::Image &image, float X, float Y, int W, int H, const sf::String &Name)
+    Entity(sf::Image &image, const sf::String &Name, float X, float Y, int W, int H)
     {
         x = X;
         y = Y;
@@ -40,28 +41,28 @@ public:
         sprite.setTexture(texture);
         sprite.setOrigin(w / 2, h / 2);
     }
+
+    sf::FloatRect getRect()
+    {//ф-ция получения прямоугольника. его коорд,размеры (шир,высот).
+        return sf::FloatRect(x, y, w, h);//эта ф-ция нужна для проверки столкновений
+    }
 };
 
 class Player : public Entity
 {
-
 public:
-
-    enum stateObject
+    enum
     {
-        left,
-        right,
-        up,
-        down,
-        jump,
-        stay
-    };
+        left, right, up, down, jump, stay
+    } state;
 
-    stateObject state;
+    int playerScore;
 
-    Player(sf::Image &image, float X, float Y, int W, int H, const sf::String &Name) : Entity(image, X, Y, W, H, Name)
+    Player(sf::Image &image, const sf::String &Name, Level &lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
+        playerScore = 0;
         state = stay;
+        obj = lev.GetAllObjects();
 
         if (name == "Player1")
         {
@@ -120,6 +121,34 @@ public:
         }
     }
 
+    void checkCollisionWithMap(float Dx, float Dy)
+    {
+        for (int i = 0; i < obj.size(); i++)//проходимся по объектам
+        {
+            if (getRect().intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+            {
+                if (obj[i].name == "solid")//если встретили препятствие
+                {
+                    if (Dy > 0)
+                    {
+                        y = obj[i].rect.top - h;
+                        dy = 0;
+                        onGround = true;
+                    }
+                    if (Dy < 0)
+                    {
+                        y = obj[i].rect.top + obj[i].rect.height;
+                        dy = 0;
+                    }
+                    if (Dx > 0)
+                    { x = obj[i].rect.left - w; }
+                    if (Dx < 0)
+                    { x = obj[i].rect.left + obj[i].rect.width; }
+                }
+            }
+        }
+    }
+
     void update(float time)
     {
         control();
@@ -164,101 +193,15 @@ public:
 
         dy = dy + 0.0015 * time;//делаем притяжение к земле
     }
-
-    void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
-    {
-        for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
-        {
-            for (int j = x / 32; j < (x + w) / 32; j++)
-            {
-                if (TileMap[i][j] == '0')//если элемент наш тайлик земли? то
-                {
-                    if (Dy > 0)
-                    {
-                        y = i * 32 - h;
-                        dy = 0;
-                        onGround = true;
-                    }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
-
-                    if (Dy < 0)
-                    {
-                        y = i * 32 + 32;
-                        dy = 0;
-                    }//столкновение с верхними краями карты(может и не пригодиться)
-
-                    if (Dx > 0)
-                    {
-                        x = j * 32 - w;
-                    }//с правым краем карты
-
-                    if (Dx < 0)
-                    {
-                        x = j * 32 + 32;
-                    }// с левым краем карты
-                }
-                else
-                {
-                    onGround - false;
-                }
-            }
-        }
-    }
-
-//    void interactionWithMap()
-//    {
-//        char const scoreMapSymbol = 's';
-//        char const healthDownMapSymbol = 'f';
-//        char const healthUpMapSymbol = 'h';
-//
-//        for (int i = y / 32; i < (y + h) / 32; i++)
-//            for (int j = x / 32; j < (x + w) / 32; j++)
-//            {
-//                if (TileMap[i][j] == '0')
-//                {
-//                    if (dy > 0)
-//                    {
-//                        y = i * 32 - h;
-//                    }
-//                    if (dy < 0)
-//                    {
-//                        y = i * 32 + 32;
-//                    }
-//                    if (dx > 0)
-//                    {
-//                        x = j * 32 - w;
-//                    }
-//                    if (dx < 0)
-//                    {
-//                        x = j * 32 + 32;
-//                    }
-//                }
-//
-//                if (TileMap[i][j] == scoreMapSymbol)
-//                {
-//                    score++;
-//                    TileMap[i][j] = ' ';
-//                }
-//
-//                if (TileMap[i][j] == healthDownMapSymbol)
-//                {
-//                    health -= 50;
-//                    TileMap[i][j] = ' ';
-//                }
-//
-//                if (TileMap[i][j] == healthUpMapSymbol)
-//                {
-//                    health += 10;
-//                    TileMap[i][j] = ' ';
-//                }
-//            }
-//    }
 };
 
 class Enemy : public Entity
 {
 public:
-    Enemy(sf::Image &image, float X, float Y, int W, int H, const sf::String& Name) : Entity(image, X, Y, W, H, Name)
+    Enemy(sf::Image &image, const sf::String &Name, Level &lvl, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
+        obj = lvl.GetObjects("solid");//инициализируем.получаем нужные объекты для взаимодействия врага с картой
+
         if (name == "EasyEnemy")
         {
             sprite.setTextureRect(sf::IntRect(0, 0, w, h));
@@ -266,38 +209,37 @@ public:
         }
     }
 
-    void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
+    void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
+        for (int i = 0; i < obj.size(); i++)//проходимся по объектам
         {
-            for (int j = x / 32; j < (x + w) / 32; j++)
+            if (getRect().intersects(obj[i].rect))//проверяем пересечение игрока с объектом
             {
-                if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+                //if (obj[i].name == "solid"){//если встретили препятствие (объект с именем solid)
+                if (Dy > 0)
                 {
-                    if (Dy > 0)
-                    {
-                        y = i * 32 - h;
-                    }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
-
-                    if (Dy < 0)
-                    {
-                        y = i * 32 + 32;
-                    }//столкновение с верхними краями карты(может и не пригодиться)
-
-                    if (Dx > 0)
-                    {
-                        x = j * 32 - w;
-                        dx = -0.1;
-                        sprite.scale(-1, 1);
-                    }//с правым краем карты
-
-                    if (Dx < 0)
-                    {
-                        x = j * 32 + 32;
-                        dx = 0.1;
-                        sprite.scale(-1, 1);
-                    }// с левым краем карты
+                    y = obj[i].rect.top - h;
+                    dy = 0;
+                    onGround = true;
                 }
+                if (Dy < 0)
+                {
+                    y = obj[i].rect.top + obj[i].rect.height;
+                    dy = 0;
+                }
+                if (Dx > 0)
+                {
+                    x = obj[i].rect.left - w;
+                    dx = -0.1;
+                    sprite.scale(-1, 1);
+                }
+                if (Dx < 0)
+                {
+                    x = obj[i].rect.left + obj[i].rect.width;
+                    dx = 0.1;
+                    sprite.scale(-1, 1);
+                }
+                //}
             }
         }
     }
@@ -326,6 +268,10 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
+    Level lvl;//создали экземпляр класса уровень
+    lvl.LoadFromFile("src/map.tmx");//загрузили в него карту, внутри класса с помощью методов он ее обработает.
+
+
     sf::Font font;
     font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
     sf::Text healthText("", font, 20);
@@ -336,21 +282,17 @@ int main()
     timeText.setColor(sf::Color::Red);
     scoreText.setColor(sf::Color::Red);
 
-    sf::Image map_image;
-    map_image.loadFromFile("upload/images/map.png");
-    sf::Texture map;
-    map.loadFromImage(map_image);
-    sf::Sprite s_map;
-    s_map.setTexture(map);
-
     sf::Image heroImage;
     heroImage.loadFromFile("upload/images/hero.png");
 
     sf::Image easyEnemyImage;
     easyEnemyImage.loadFromFile("upload/images/cactus.png");
 
-    Player dino(heroImage, 50, 750, 88, 94, "Player1");
-    Enemy easyEnemy(easyEnemyImage, 850, 693, 55, 74, "EasyEnemy");
+    Object player = lvl.GetObject("player");//объект игрока на нашей карте.задаем координаты игроку в начале при помощи него
+    Object easyEnemyObject = lvl.GetObject("easyEnemy");//объект легкого врага на нашей карте.задаем координаты игроку в начале при помощи него
+
+    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 88,94);//передаем координаты прямоугольника player из карты в координаты нашего игрока
+    Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 55,74);//передаем координаты прямоугольника easyEnemy из карты в координаты нашего врага
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
@@ -373,63 +315,14 @@ int main()
             }
         }
 
-        gameTime = gameTimeClock.getElapsedTime().asSeconds();
-
         dino.update(time);
         easyEnemy.update(time);
         window.setView(view);
         window.clear();
-
-        char const scoreMapSymbol = 's';
-        char const healthDownMapSymbol = 'f';
-        char const healthUpMapSymbol = 'h';
-        char const mapBorder = '0';
-
-        for (int i = 0; i < HEIGHT_MAP; i++)
-            for (int j = 0; j < WIDTH_MAP; j++)
-            {
-                if (TileMap[i][j] == ' ')
-                {
-                    s_map.setTextureRect(sf::IntRect(0, 0, 32, 32));
-                }
-                if (TileMap[i][j] == scoreMapSymbol)
-                {
-                    s_map.setTextureRect(sf::IntRect(32, 0, 32, 32));
-                }
-                if (TileMap[i][j] == mapBorder)
-                {
-                    s_map.setTextureRect(sf::IntRect(64, 0, 32, 32));
-                }
-                if (TileMap[i][j] == healthDownMapSymbol)
-                {
-                    s_map.setTextureRect(sf::IntRect(96, 0, 32, 32));
-                }
-                if (TileMap[i][j] == healthUpMapSymbol)
-                {
-                    s_map.setTextureRect(sf::IntRect(128, 0, 32, 32));
-                }
-
-                s_map.setPosition(j * 32, i * 32);
-
-                window.draw(s_map);
-
-                std::ostringstream gameHealthString, gameTimeString, gameScoreString;
-                gameHealthString << dino.health;
-//                gameScoreString << dino.score;
-                gameTimeString << gameTime;
-                healthText.setString("Health: " + gameHealthString.str());
-                healthText.setPosition(view.getCenter().x + (float) CAM_WIDTH / 2 - 125, view.getCenter().y - (float) CAM_HEIGHT / 2 + 20);
-                timeText.setString("Time: " + gameTimeString.str());
-                timeText.setPosition(view.getCenter().x + (float) CAM_WIDTH / 2 - CAM_WIDTH + 25, view.getCenter().y - (float) CAM_HEIGHT / 2 + 20);
-                scoreText.setString("Bitcoin: " + gameScoreString.str());
-                scoreText.setPosition(view.getCenter().x + (float) CAM_WIDTH / 2 - 250, view.getCenter().y - (float) CAM_HEIGHT / 2 + 20);
-            }
+        lvl.Draw(window);//рисуем новую карту
 
         window.draw(easyEnemy.sprite);
         window.draw(dino.sprite);
-        window.draw(healthText);
-        window.draw(timeText);
-        window.draw(scoreText);
         window.display();
     }
 
