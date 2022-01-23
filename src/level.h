@@ -10,13 +10,13 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "../TinyXML/tinyxml.h"
+#include "TinyXML/tinyxml.h"
+//#include "tinyxml2/tinyxml2.h"
 
 struct Object
 {
     int GetPropertyInt(std::string name);//номер свойства объекта в нашем списке
     float GetPropertyFloat(std::string name);
-
     std::string GetPropertyString(std::string name);
 
     std::string name;//объявили переменную name типа string
@@ -38,7 +38,6 @@ class Level//главный класс - уровень
 public:
     bool LoadFromFile(std::string filename);//возвращает false если не получилось загрузить
     Object GetObject(std::string name);
-
     std::vector<Object> GetObjects(std::string name);//выдаем объект в наш уровень
     std::vector<Object> GetAllObjects();//выдаем все объекты в наш уровень
     void Draw(sf::RenderWindow &window);//рисуем в окно
@@ -202,9 +201,7 @@ bool Level::LoadFromFile(std::string filename)//двоеточия-обраще�
                 x = 0;
                 y++;
                 if (y >= height)
-                {
                     y = 0;
-                }
             }
         }
 
@@ -267,7 +264,7 @@ bool Level::LoadFromFile(std::string filename)//двоеточия-обраще�
                 object.type = objectType;
                 object.sprite = sprite;
 
-                sf::Rect<float> objectRect;
+                sf::Rect <float> objectRect;
                 objectRect.top = y;
                 objectRect.left = x;
                 objectRect.height = height;
@@ -316,9 +313,7 @@ Object Level::GetObject(std::string name)
     // только первый объект с заданным именем
     for (int i = 0; i < objects.size(); i++)
         if (objects[i].name == name)
-        {
             return objects[i];
-        }
 }
 
 std::vector<Object> Level::GetObjects(std::string name)
@@ -327,9 +322,7 @@ std::vector<Object> Level::GetObjects(std::string name)
     std::vector<Object> vec;
     for (int i = 0; i < objects.size(); i++)
         if (objects[i].name == name)
-        {
             vec.push_back(objects[i]);
-        }
 
     return vec;
 }

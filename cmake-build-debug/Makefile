@@ -153,6 +153,102 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/TinyXML/tinystr.o: src/TinyXML/tinystr.cpp.o
+.PHONY : src/TinyXML/tinystr.o
+
+# target to build an object file
+src/TinyXML/tinystr.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.o
+.PHONY : src/TinyXML/tinystr.cpp.o
+
+src/TinyXML/tinystr.i: src/TinyXML/tinystr.cpp.i
+.PHONY : src/TinyXML/tinystr.i
+
+# target to preprocess a source file
+src/TinyXML/tinystr.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.i
+.PHONY : src/TinyXML/tinystr.cpp.i
+
+src/TinyXML/tinystr.s: src/TinyXML/tinystr.cpp.s
+.PHONY : src/TinyXML/tinystr.s
+
+# target to generate assembly for a file
+src/TinyXML/tinystr.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinystr.cpp.s
+.PHONY : src/TinyXML/tinystr.cpp.s
+
+src/TinyXML/tinyxml.o: src/TinyXML/tinyxml.cpp.o
+.PHONY : src/TinyXML/tinyxml.o
+
+# target to build an object file
+src/TinyXML/tinyxml.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.o
+.PHONY : src/TinyXML/tinyxml.cpp.o
+
+src/TinyXML/tinyxml.i: src/TinyXML/tinyxml.cpp.i
+.PHONY : src/TinyXML/tinyxml.i
+
+# target to preprocess a source file
+src/TinyXML/tinyxml.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.i
+.PHONY : src/TinyXML/tinyxml.cpp.i
+
+src/TinyXML/tinyxml.s: src/TinyXML/tinyxml.cpp.s
+.PHONY : src/TinyXML/tinyxml.s
+
+# target to generate assembly for a file
+src/TinyXML/tinyxml.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxml.cpp.s
+.PHONY : src/TinyXML/tinyxml.cpp.s
+
+src/TinyXML/tinyxmlerror.o: src/TinyXML/tinyxmlerror.cpp.o
+.PHONY : src/TinyXML/tinyxmlerror.o
+
+# target to build an object file
+src/TinyXML/tinyxmlerror.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.o
+.PHONY : src/TinyXML/tinyxmlerror.cpp.o
+
+src/TinyXML/tinyxmlerror.i: src/TinyXML/tinyxmlerror.cpp.i
+.PHONY : src/TinyXML/tinyxmlerror.i
+
+# target to preprocess a source file
+src/TinyXML/tinyxmlerror.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.i
+.PHONY : src/TinyXML/tinyxmlerror.cpp.i
+
+src/TinyXML/tinyxmlerror.s: src/TinyXML/tinyxmlerror.cpp.s
+.PHONY : src/TinyXML/tinyxmlerror.s
+
+# target to generate assembly for a file
+src/TinyXML/tinyxmlerror.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlerror.cpp.s
+.PHONY : src/TinyXML/tinyxmlerror.cpp.s
+
+src/TinyXML/tinyxmlparser.o: src/TinyXML/tinyxmlparser.cpp.o
+.PHONY : src/TinyXML/tinyxmlparser.o
+
+# target to build an object file
+src/TinyXML/tinyxmlparser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.o
+.PHONY : src/TinyXML/tinyxmlparser.cpp.o
+
+src/TinyXML/tinyxmlparser.i: src/TinyXML/tinyxmlparser.cpp.i
+.PHONY : src/TinyXML/tinyxmlparser.i
+
+# target to preprocess a source file
+src/TinyXML/tinyxmlparser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.i
+.PHONY : src/TinyXML/tinyxmlparser.cpp.i
+
+src/TinyXML/tinyxmlparser.s: src/TinyXML/tinyxmlparser.cpp.s
+.PHONY : src/TinyXML/tinyxmlparser.s
+
+# target to generate assembly for a file
+src/TinyXML/tinyxmlparser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dinoKiller.dir/build.make CMakeFiles/dinoKiller.dir/src/TinyXML/tinyxmlparser.cpp.s
+.PHONY : src/TinyXML/tinyxmlparser.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +261,18 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/TinyXML/tinystr.o"
+	@echo "... src/TinyXML/tinystr.i"
+	@echo "... src/TinyXML/tinystr.s"
+	@echo "... src/TinyXML/tinyxml.o"
+	@echo "... src/TinyXML/tinyxml.i"
+	@echo "... src/TinyXML/tinyxml.s"
+	@echo "... src/TinyXML/tinyxmlerror.o"
+	@echo "... src/TinyXML/tinyxmlerror.i"
+	@echo "... src/TinyXML/tinyxmlerror.s"
+	@echo "... src/TinyXML/tinyxmlparser.o"
+	@echo "... src/TinyXML/tinyxmlparser.i"
+	@echo "... src/TinyXML/tinyxmlparser.s"
 .PHONY : help
 
 
