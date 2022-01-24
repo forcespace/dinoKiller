@@ -261,7 +261,7 @@ public:
     }
 };
 
-int main()
+bool startGame()
 {
     randomMapGenerate();
 
@@ -271,9 +271,9 @@ int main()
     Level lvl;
     lvl.LoadFromFile("src/map3.tmx");
 
-    sf::Music music;//создаем объект музыки
-    music.openFromFile("music.ogg");//загружаем файл
-    music.play();//воспроизводим музыку
+    sf::Music music;
+    music.openFromFile("music.ogg");
+    music.play();
 
     sf::Font font;
     font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
@@ -331,6 +331,14 @@ int main()
 
         lifeBarPlayer.update(100);
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        {
+            return true;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            return false;
+        }
 
         dino.update(time);
 
@@ -385,6 +393,19 @@ int main()
         window.draw(dino.sprite);
         window.display();
     }
+}
 
+void gameRunning()
+{
+    if (startGame())
+    {
+        gameRunning();
+    }
+}
+
+int main()
+{
+
+    gameRunning();//запускаем процесс игры
     return 0;
 }
