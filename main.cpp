@@ -16,13 +16,13 @@ constexpr unsigned CAM_HEIGHT = WINDOW_HEIGHT;
 class Entity
 {
 public:
-    std::vector<Object> obj;//вектор объектов карты
-    float dx, dy, x, y, speed, moveTimer;//добавили переменную таймер для будущих целей
+    std::vector<Object> obj;
+    float dx, dy, x, y, speed;
     int w, h, health;
     bool life, onGround;
     sf::Texture texture;
     sf::Sprite sprite;
-    sf::String name;//враги могут быть разные, мы не будем делать другой класс для врага.всего лишь различим врагов по имени и дадим каждому свое действие в update в зависимости от имени
+    sf::String name;
 
     Entity(sf::Image &image, const sf::String &Name, float X, float Y, int W, int H)
     {
@@ -44,8 +44,8 @@ public:
     }
 
     sf::FloatRect getRect()
-    {//ф-ция получения прямоугольника. его коорд,размеры (шир,высот).
-        return sf::FloatRect(x, y, w, h);//эта ф-ция нужна для проверки столкновений
+    {
+        return sf::FloatRect(x, y, w, h);
     }
 
     virtual void update(float time) = 0;
@@ -126,11 +126,11 @@ public:
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = 0; i < obj.size(); i++)//проходимся по объектам
+        for (int i = 0; i < obj.size(); i++)
         {
-            if (getRect().intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+            if (getRect().intersects(obj[i].rect))
             {
-                if (obj[i].name == "solid")//если встретили препятствие
+                if (obj[i].name == "solid")
                 {
                     if (Dy > 0)
                     {
@@ -156,31 +156,31 @@ public:
     {
         control();
 
-        switch (state)//тут делаются различные действия в зависимости от состояния
+        switch (state)
         {
             case right:
                 dx = speed;
-                break;//состояние идти вправо
+                break;
             case left:
                 dx = -speed;
-                break;//состояние идти влево
+                break;
             case up:
-                break;//будет состояние поднятия наверх (например по лестнице)
+                break;
             case down:
-                break;//будет состояние во время спуска персонажа (например по лестнице)
+                break;
             case jump:
-                break;//здесь может быть вызов анимации
+                break;
             case stay:
-                break;//и здесь тоже
+                break;
         }
 
         speed = 0;
 
         x += dx * time;
-        checkCollisionWithMap(dx, 0);//обрабатываем столкновение по Х
+        checkCollisionWithMap(dx, 0);
 
         y += dy * time;
-        checkCollisionWithMap(0, dy);//обрабатываем столкновение по Y
+        checkCollisionWithMap(0, dy);
 
         sprite.setPosition(x + w / 2, y + h / 2);
 
@@ -194,7 +194,7 @@ public:
             getPlayerCoordinateForView(x, y);
         }
 
-        dy = dy + 0.0015 * time;//делаем притяжение к земле
+        dy = dy + 0.0015 * time;
     }
 };
 
@@ -203,22 +203,21 @@ class Enemy : public Entity
 public:
     Enemy(sf::Image &image, const sf::String &Name, Level &lvl, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
-        obj = lvl.GetObjects("solid");//инициализируем.получаем нужные объекты для взаимодействия врага с картой
+        obj = lvl.GetObjects("solid");
 
         if (name == "easyEnemy")
         {
             sprite.setTextureRect(sf::IntRect(0, 0, w, h));
-            dx = 0.1;//даем скорость.этот объект всегда двигается
+            dx = 0.1;
         }
     }
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = 0; i < obj.size(); i++)//проходимся по объектам
+        for (int i = 0; i < obj.size(); i++)
         {
-            if (getRect().intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+            if (getRect().intersects(obj[i].rect))
             {
-                //if (obj[i].name == "solid"){//если встретили препятствие (объект с именем solid)
                 if (Dy > 0)
                 {
                     y = obj[i].rect.top - h;
@@ -242,7 +241,6 @@ public:
                     dx = 0.1;
                     sprite.scale(-1, 1);
                 }
-                //}
             }
         }
     }
@@ -250,11 +248,10 @@ public:
     void update(float time)
     {
         if (name == "easyEnemy")
-        {//для персонажа с таким именем логика будет такой
-            //moveTimer += time;if (moveTimer>3000){ dx *= -1; moveTimer = 0; }//меняет направление примерно каждые 3 сек
-            checkCollisionWithMap(dx, dy);//обрабатываем столкновение по Х
+        {
+            checkCollisionWithMap(dx, dy);
             x += dx * time;
-            sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта в место его центра
+            sprite.setPosition(x + w / 2, y + h / 2);
 
             if (health <= 0)
             {
@@ -271,8 +268,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
-    Level lvl;//создали экземпляр класса уровень
-    lvl.LoadFromFile("src/map.tmx");//загрузили в него карту, внутри класса с помощью методов он ее обработает.
+    Level lvl;
+    lvl.LoadFromFile("src/map.tmx");
 
     sf::Font font;
     font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
@@ -290,22 +287,20 @@ int main()
     sf::Image easyEnemyImage;
     easyEnemyImage.loadFromFile("upload/images/cactus.png");
 
-    std::list<Entity *> entities;//создаю список, сюда буду кидать объекты.например врагов.
-    std::list<Entity *>::iterator it;//итератор чтобы проходить по эл-там списка
-    std::list<Entity *>::iterator it2;//второй итератор.для взаимодействия между объектами списка
+    std::list<Entity *> entities;
+    std::list<Entity *>::iterator it;
+    std::list<Entity *>::iterator it2;
 
-    std::vector<Object> e = lvl.GetObjects("easyEnemy");//все объекты врага на tmx карте хранятся в этом векторе
+    std::vector<Object> e = lvl.GetObjects("easyEnemy");
 
-    for (int i = 0; i < e.size(); i++)//проходимся по элементам этого вектора(а именно по врагам)
+    for (int i = 0; i < e.size(); i++)
     {
         entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, e[i].rect.left, e[i].rect.top, 55, 74));//и закидываем в список всех наших врагов с карты
     }
 
-    Object player = lvl.GetObject("player");//объект игрока на нашей карте.задаем координаты игроку в начале при помощи него
-//    Object easyEnemyObject = lvl.GetObject("easyEnemy");//объект легкого врага на нашей карте.задаем координаты игроку в начале при помощи него
+    Object player = lvl.GetObject("player");
 
-    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 88, 94);//передаем координаты прямоугольника player из карты в координаты нашего игрока
-//    Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 55,74);//передаем координаты прямоугольника easyEnemy из карты в координаты нашего врага
+    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 88, 94);
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
@@ -330,7 +325,7 @@ int main()
             }
         }
 
-        lifeBarPlayer.update(100);//сюда передаем значение, которое надо нарисовать. Можно передать здоровья игрока тогда будет lifeBarPlayer.update(player.getHealth()); так
+        lifeBarPlayer.update(100);
 
 
         dino.update(time);
@@ -338,26 +333,24 @@ int main()
         for (it = entities.begin(); it != entities.end(); it++)
         {
             (*it)->update(time);
-        }//для всех элементов списка(пока это только враги,но могут быть и пули к примеру) активируем ф-цию update
+        }
 
-        //easyEnemy.update(time);//старый вариант update врага
-
-        for (it = entities.begin(); it != entities.end(); it++)//проходимся по эл-там списка
+        for (it = entities.begin(); it != entities.end(); it++)
         {
-            if ((*it)->getRect().intersects(dino.getRect()))//если прямоугольник спрайта объекта пересекается с игроком
+            if ((*it)->getRect().intersects(dino.getRect()))
             {
                 if ((*it)->name == "easyEnemy")
-                {//и при этом имя объекта EasyEnemy,то..
-                    if ((*it)->dx > 0)//если враг идет вправо
+                {
+                    if ((*it)->dx > 0)
                     {
-                        (*it)->x = dino.x - (*it)->w; //отталкиваем его от игрока влево (впритык)
-                        (*it)->dx = 0;//останавливаем
+                        (*it)->x = dino.x - (*it)->w;
+                        (*it)->dx = 0;
                     }
 
-                    if ((*it)->dx < 0)//если враг идет влево
+                    if ((*it)->dx < 0)
                     {
-                        (*it)->x = dino.x + dino.w; //аналогично - отталкиваем вправо
-                        (*it)->dx = 0;//останавливаем
+                        (*it)->x = dino.x + dino.w;
+                        (*it)->dx = 0;
                     }
                 }
             }
@@ -365,11 +358,11 @@ int main()
             for (it2 = entities.begin(); it2 != entities.end(); it2++)
             {
                 if ((*it)->getRect() != (*it2)->getRect())
-                {//при этом это должны быть разные прямоугольники
-                    if (((*it)->getRect().intersects((*it2)->getRect())) && ((*it)->name == "easyEnemy") && ((*it2)->name == "easyEnemy"))//если столкнулись два объекта и они враги
+                {
+                    if (((*it)->getRect().intersects((*it2)->getRect())) && ((*it)->name == "easyEnemy") && ((*it2)->name == "easyEnemy"))
                     {
-                        (*it)->dx *= -1;//меняем направление движения врага
-                        (*it)->sprite.scale(-1, 1);//отражаем спрайт по горизонтали
+                        (*it)->dx *= -1;
+                        (*it)->sprite.scale(-1, 1);
                     }
                 }
             }
@@ -377,15 +370,14 @@ int main()
 
         window.setView(view);
         window.clear();
-        lvl.Draw(window);//рисуем новую карту
+        lvl.Draw(window);
 
         for (it = entities.begin(); it != entities.end(); it++)
         {
-            window.draw((*it)->sprite); //рисуем entities объекты (сейчас это только враги)
+            window.draw((*it)->sprite);
         }
 
-//        window.draw(easyEnemy.sprite);
-        lifeBarPlayer.draw(window);//рисуем полоску здоровья
+        lifeBarPlayer.draw(window);
         window.draw(dino.sprite);
         window.display();
     }
