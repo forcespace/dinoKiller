@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <sstream>
 #include "src/map.h"
 #include "src/view.h"
@@ -269,6 +270,10 @@ int main()
 
     Level lvl;
     lvl.LoadFromFile("src/map3.tmx");
+
+    sf::Music music;//создаем объект музыки
+    music.openFromFile("music.ogg");//загружаем файл
+    music.play();//воспроизводим музыку
 
     sf::Font font;
     font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
