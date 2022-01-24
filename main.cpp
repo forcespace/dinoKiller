@@ -264,11 +264,24 @@ public:
 void changeLevel(Level &lvl, int &numberLevel)
 {
     if (numberLevel == 1)
-    { lvl.LoadFromFile("src/map3.tmx"); }
-    if (numberLevel == 2)
-    { lvl.LoadFromFile("src/map3.tmx"); }
-    if (numberLevel == 3)
-    { lvl.LoadFromFile("src/map3.tmx"); }
+    {
+        lvl.LoadFromFile("src/map3.tmx");
+    }
+
+    else if (numberLevel == 2)
+    {
+        lvl.LoadFromFile("src/map3.tmx");
+    }
+
+    else if (numberLevel == 3)
+    {
+        lvl.LoadFromFile("src/map3.tmx");
+    }
+
+    else
+    {
+        lvl.LoadFromFile("src/map3.tmx");
+    }
 }
 
 bool startGame(sf::RenderWindow &window, int &numberLevel)
@@ -280,7 +293,6 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
 
     Level lvl;
     changeLevel(lvl, numberLevel);
-//    lvl.LoadFromFile("src/map3.tmx");
 
     sf::Music music;
     music.openFromFile("music.ogg");
@@ -414,18 +426,20 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
 }
 
 void gameRunning(sf::RenderWindow &window, int &numberLevel)
-{//ф-ция перезагружает игру , если это необходимо
+{
     if (startGame(window, numberLevel))
     {
         numberLevel++;
         gameRunning(window, numberLevel);
-    }//принимает с какого уровня начать игру
+    }
 }
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
     int numberLevel = 1;
-    gameRunning(window, numberLevel);//запускаем процесс игры
+
+    gameRunning(window, numberLevel);
+
     return 0;
 }
