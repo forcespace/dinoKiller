@@ -1,8 +1,6 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <sstream>
-#include "src/map.h"
 #include "src/view.h"
 #include "src/level.h"
 #include "src/LifeBar.h"
@@ -59,11 +57,8 @@ public:
         left, right, up, down, jump, stay
     } state;
 
-    int playerScore;
-
     Player(sf::Image &image, const sf::String &Name, Level &lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
-        playerScore = 0;
         state = stay;
         obj = lev.GetAllObjects();
 
@@ -126,33 +121,52 @@ public:
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = 0; i < obj.size(); i++)
+        for (auto & i : obj)
         {
-            if (getRect().intersects(obj[i].rect))
+            if (getRect().intersects(i.rect))
             {
-                if (obj[i].name == "solid")
+                if (i.name == "solid")
                 {
                     if (Dy > 0)
                     {
-                        y = obj[i].rect.top - h;
+                        y = i.rect.top - h;
                         dy = 0;
                         onGround = true;
                     }
                     if (Dy < 0)
                     {
-                        y = obj[i].rect.top + obj[i].rect.height;
+                        y = i.rect.top + i.rect.height;
                         dy = 0;
                     }
                     if (Dx > 0)
-                    { x = obj[i].rect.left - w; }
+                    { x = i.rect.left - w; }
                     if (Dx < 0)
-                    { x = obj[i].rect.left + obj[i].rect.width; }
+                    { x = i.rect.left + i.rect.width; }
+                }
+
+                if (i.name == "end")
+                {
+                    if (Dy > 0)
+                    {
+                        y = i.rect.top - h;
+                        dy = 0;
+                        onGround = true;
+                    }
+                    if (Dy < 0)
+                    {
+                        y = i.rect.top + i.rect.height;
+                        dy = 0;
+                    }
+                    if (Dx > 0)
+                    { x = i.rect.left - w; }
+                    if (Dx < 0)
+                    { x = i.rect.left + i.rect.width; }
                 }
             }
         }
     }
 
-    void update(float time)
+    void update(float time) override
     {
         control();
 
@@ -214,30 +228,30 @@ public:
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = 0; i < obj.size(); i++)
+        for (auto & i : obj)
         {
-            if (getRect().intersects(obj[i].rect))
+            if (getRect().intersects(i.rect))
             {
                 if (Dy > 0)
                 {
-                    y = obj[i].rect.top - h;
+                    y = i.rect.top - h;
                     dy = 0;
                     onGround = true;
                 }
                 if (Dy < 0)
                 {
-                    y = obj[i].rect.top + obj[i].rect.height;
+                    y = i.rect.top + i.rect.height;
                     dy = 0;
                 }
                 if (Dx > 0)
                 {
-                    x = obj[i].rect.left - w;
+                    x = i.rect.left - w;
                     dx = -0.1;
                     sprite.scale(-1, 1);
                 }
                 if (Dx < 0)
                 {
-                    x = obj[i].rect.left + obj[i].rect.width;
+                    x = i.rect.left + i.rect.width;
                     dx = 0.1;
                     sprite.scale(-1, 1);
                 }
@@ -245,7 +259,7 @@ public:
         }
     }
 
-    void update(float time)
+    void update(float time) override
     {
         if (name == "easyEnemy")
         {
@@ -265,12 +279,12 @@ void changeLevel(Level &lvl, int &numberLevel)
 {
     if (numberLevel == 1)
     {
-        lvl.LoadFromFile("src/map3.tmx");
+        lvl.LoadFromFile("src/map1.tmx");
     }
 
     else if (numberLevel == 2)
     {
-        lvl.LoadFromFile("src/map3.tmx");
+        lvl.LoadFromFile("src/map2.tmx");
     }
 
     else if (numberLevel == 3)
@@ -280,33 +294,20 @@ void changeLevel(Level &lvl, int &numberLevel)
 
     else
     {
-        lvl.LoadFromFile("src/map3.tmx");
+        lvl.LoadFromFile("src/map1.tmx");
     }
 }
 
 bool startGame(sf::RenderWindow &window, int &numberLevel)
 {
-    randomMapGenerate();
-
-
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
     Level lvl;
     changeLevel(lvl, numberLevel);
 
     sf::Music music;
-    music.openFromFile("music.ogg");
+    music.openFromFile("upload/sound/music.ogg");
     music.play();
-
-    sf::Font font;
-    font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
-    sf::Text healthText("", font, 20);
-    sf::Text timeText("", font, 20);
-    sf::Text scoreText("", font, 20);
-
-    healthText.setColor(sf::Color::Red);
-    timeText.setColor(sf::Color::Red);
-    scoreText.setColor(sf::Color::Red);
 
     sf::Image heroImage;
     heroImage.loadFromFile("upload/images/hero2.png");
@@ -320,9 +321,9 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
 
     std::vector<Object> e = lvl.GetObjects("easyEnemy");
 
-    for (int i = 0; i < e.size(); i++)
+    for (auto & i : e)
     {
-        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, e[i].rect.left, e[i].rect.top, 28, 37));
+        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, i.rect.left, i.rect.top, 28, 37));
     }
 
     Object player = lvl.GetObject("player");
@@ -331,7 +332,6 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
-    int gameTime = 0;
 
     LifeBar lifeBarPlayer;
 
@@ -387,12 +387,14 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
                     {
                         (*it)->x = dino.x - (*it)->w;
                         (*it)->dx = 0;
+                        return true;
                     }
 
                     if ((*it)->dx < 0)
                     {
                         (*it)->x = dino.x + dino.w;
                         (*it)->dx = 0;
+                        return true;
                     }
                 }
             }
