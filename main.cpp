@@ -261,15 +261,26 @@ public:
     }
 };
 
-bool startGame()
+void changeLevel(Level &lvl, int &numberLevel)
+{
+    if (numberLevel == 1)
+    { lvl.LoadFromFile("src/map3.tmx"); }
+    if (numberLevel == 2)
+    { lvl.LoadFromFile("src/map3.tmx"); }
+    if (numberLevel == 3)
+    { lvl.LoadFromFile("src/map3.tmx"); }
+}
+
+bool startGame(sf::RenderWindow &window, int &numberLevel)
 {
     randomMapGenerate();
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
+
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
     Level lvl;
-    lvl.LoadFromFile("src/map3.tmx");
+    changeLevel(lvl, numberLevel);
+//    lvl.LoadFromFile("src/map3.tmx");
 
     sf::Music music;
     music.openFromFile("music.ogg");
@@ -331,10 +342,17 @@ bool startGame()
 
         lifeBarPlayer.update(100);
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+        {
+            lvl.levelNumber++;
+            return true;
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
         {
             return true;
         }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             return false;
@@ -395,17 +413,19 @@ bool startGame()
     }
 }
 
-void gameRunning()
-{
-    if (startGame())
+void gameRunning(sf::RenderWindow &window, int &numberLevel)
+{//ф-ция перезагружает игру , если это необходимо
+    if (startGame(window, numberLevel))
     {
-        gameRunning();
-    }
+        numberLevel++;
+        gameRunning(window, numberLevel);
+    }//принимает с какого уровня начать игру
 }
 
 int main()
 {
-
-    gameRunning();//запускаем процесс игры
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
+    int numberLevel = 1;
+    gameRunning(window, numberLevel);//запускаем процесс игры
     return 0;
 }
