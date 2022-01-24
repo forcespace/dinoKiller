@@ -10,8 +10,8 @@
 
 constexpr unsigned WINDOW_WIDTH = 1920;
 constexpr unsigned WINDOW_HEIGHT = 1080;
-constexpr unsigned CAM_WIDTH = WINDOW_WIDTH;
-constexpr unsigned CAM_HEIGHT = WINDOW_HEIGHT;
+constexpr unsigned CAM_WIDTH = 1200;
+constexpr unsigned CAM_HEIGHT = 600;
 
 class Entity
 {
@@ -31,7 +31,6 @@ public:
         w = W;
         h = H;
         name = Name;
-        moveTimer = 0;
         speed = 0;
         health = 100;
         dx = 0;
@@ -101,7 +100,7 @@ public:
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround))
         {
             state = jump;
-            dy = -0.75;
+            dy = -.65;
             onGround = false;//то состояние равно прыжок,прыгнули и сообщили, что мы не на земле
 ////                currentFrame += 0.011 * time;
 ////                if (currentFrame > 4)
@@ -269,7 +268,7 @@ int main()
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
     Level lvl;
-    lvl.LoadFromFile("src/map.tmx");
+    lvl.LoadFromFile("src/map3.tmx");
 
     sf::Font font;
     font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
@@ -282,10 +281,10 @@ int main()
     scoreText.setColor(sf::Color::Red);
 
     sf::Image heroImage;
-    heroImage.loadFromFile("upload/images/hero.png");
+    heroImage.loadFromFile("upload/images/hero2.png");
 
     sf::Image easyEnemyImage;
-    easyEnemyImage.loadFromFile("upload/images/cactus.png");
+    easyEnemyImage.loadFromFile("upload/images/cactus2.png");
 
     std::list<Entity *> entities;
     std::list<Entity *>::iterator it;
@@ -295,12 +294,12 @@ int main()
 
     for (int i = 0; i < e.size(); i++)
     {
-        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, e[i].rect.left, e[i].rect.top, 55, 74));//и закидываем в список всех наших врагов с карты
+        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, e[i].rect.left, e[i].rect.top, 28, 37));
     }
 
     Object player = lvl.GetObject("player");
 
-    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 88, 94);
+    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 44, 47);
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
