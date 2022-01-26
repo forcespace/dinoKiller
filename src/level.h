@@ -11,7 +11,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "TinyXML/tinyxml.h"
-//#include "tinyxml2/tinyxml2.h"
 
 struct Object
 {
@@ -36,6 +35,7 @@ struct Layer//слои
 class Level//главный класс - уровень
 {
 public:
+    int levelNumber;//номер уровня
     bool LoadFromFile(std::string filename);//возвращает false если не получилось загрузить
     Object GetObject(std::string name);
     std::vector<Object> GetObjects(std::string name);//выдаем объект в наш уровень

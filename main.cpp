@@ -1,7 +1,6 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <sstream>
-#include "src/map.h"
 #include "src/view.h"
 #include "src/level.h"
 #include "src/LifeBar.h"
@@ -58,11 +57,8 @@ public:
         left, right, up, down, jump, stay
     } state;
 
-    int playerScore;
-
     Player(sf::Image &image, const sf::String &Name, Level &lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
-        playerScore = 0;
         state = stay;
         obj = lev.GetAllObjects();
 
@@ -125,33 +121,52 @@ public:
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = 0; i < obj.size(); i++)
+        for (auto & i : obj)
         {
-            if (getRect().intersects(obj[i].rect))
+            if (getRect().intersects(i.rect))
             {
-                if (obj[i].name == "solid")
+                if (i.name == "solid")
                 {
                     if (Dy > 0)
                     {
-                        y = obj[i].rect.top - h;
+                        y = i.rect.top - h;
                         dy = 0;
                         onGround = true;
                     }
                     if (Dy < 0)
                     {
-                        y = obj[i].rect.top + obj[i].rect.height;
+                        y = i.rect.top + i.rect.height;
                         dy = 0;
                     }
                     if (Dx > 0)
-                    { x = obj[i].rect.left - w; }
+                    { x = i.rect.left - w; }
                     if (Dx < 0)
-                    { x = obj[i].rect.left + obj[i].rect.width; }
+                    { x = i.rect.left + i.rect.width; }
+                }
+
+                if (i.name == "end")
+                {
+                    if (Dy > 0)
+                    {
+                        y = i.rect.top - h;
+                        dy = 0;
+                        onGround = true;
+                    }
+                    if (Dy < 0)
+                    {
+                        y = i.rect.top + i.rect.height;
+                        dy = 0;
+                    }
+                    if (Dx > 0)
+                    { x = i.rect.left - w; }
+                    if (Dx < 0)
+                    { x = i.rect.left + i.rect.width; }
                 }
             }
         }
     }
 
-    void update(float time)
+    void update(float time) override
     {
         control();
 
@@ -213,30 +228,30 @@ public:
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        for (int i = 0; i < obj.size(); i++)
+        for (auto & i : obj)
         {
-            if (getRect().intersects(obj[i].rect))
+            if (getRect().intersects(i.rect))
             {
                 if (Dy > 0)
                 {
-                    y = obj[i].rect.top - h;
+                    y = i.rect.top - h;
                     dy = 0;
                     onGround = true;
                 }
                 if (Dy < 0)
                 {
-                    y = obj[i].rect.top + obj[i].rect.height;
+                    y = i.rect.top + i.rect.height;
                     dy = 0;
                 }
                 if (Dx > 0)
                 {
-                    x = obj[i].rect.left - w;
+                    x = i.rect.left - w;
                     dx = -0.1;
                     sprite.scale(-1, 1);
                 }
                 if (Dx < 0)
                 {
-                    x = obj[i].rect.left + obj[i].rect.width;
+                    x = i.rect.left + i.rect.width;
                     dx = 0.1;
                     sprite.scale(-1, 1);
                 }
@@ -244,7 +259,7 @@ public:
         }
     }
 
-    void update(float time)
+    void update(float time) override
     {
         if (name == "easyEnemy")
         {
@@ -260,25 +275,39 @@ public:
     }
 };
 
-int main()
+void changeLevel(Level &lvl, int &numberLevel)
 {
-    randomMapGenerate();
+    if (numberLevel == 1)
+    {
+        lvl.LoadFromFile("src/map1.tmx");
+    }
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
+    else if (numberLevel == 2)
+    {
+        lvl.LoadFromFile("src/map2.tmx");
+    }
+
+    else if (numberLevel == 3)
+    {
+        lvl.LoadFromFile("src/map3.tmx");
+    }
+
+    else
+    {
+        lvl.LoadFromFile("src/map1.tmx");
+    }
+}
+
+bool startGame(sf::RenderWindow &window, int &numberLevel)
+{
     view.reset(sf::FloatRect(0, 0, CAM_WIDTH, CAM_HEIGHT));
 
     Level lvl;
-    lvl.LoadFromFile("src/map3.tmx");
+    changeLevel(lvl, numberLevel);
 
-    sf::Font font;
-    font.loadFromFile("upload/font/EuclidCircularB-Regular.ttf");
-    sf::Text healthText("", font, 20);
-    sf::Text timeText("", font, 20);
-    sf::Text scoreText("", font, 20);
-
-    healthText.setColor(sf::Color::Red);
-    timeText.setColor(sf::Color::Red);
-    scoreText.setColor(sf::Color::Red);
+    sf::Music music;
+    music.openFromFile("upload/sound/music.ogg");
+    music.play();
 
     sf::Image heroImage;
     heroImage.loadFromFile("upload/images/hero2.png");
@@ -292,9 +321,9 @@ int main()
 
     std::vector<Object> e = lvl.GetObjects("easyEnemy");
 
-    for (int i = 0; i < e.size(); i++)
+    for (auto & i : e)
     {
-        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, e[i].rect.left, e[i].rect.top, 28, 37));
+        entities.push_back(new Enemy(easyEnemyImage, "easyEnemy", lvl, i.rect.left, i.rect.top, 28, 37));
     }
 
     Object player = lvl.GetObject("player");
@@ -303,7 +332,6 @@ int main()
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
-    int gameTime = 0;
 
     LifeBar lifeBarPlayer;
 
@@ -326,6 +354,21 @@ int main()
 
         lifeBarPlayer.update(100);
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+        {
+            lvl.levelNumber++;
+            return true;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        {
+            return true;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            return false;
+        }
 
         dino.update(time);
 
@@ -344,12 +387,14 @@ int main()
                     {
                         (*it)->x = dino.x - (*it)->w;
                         (*it)->dx = 0;
+                        return true;
                     }
 
                     if ((*it)->dx < 0)
                     {
                         (*it)->x = dino.x + dino.w;
                         (*it)->dx = 0;
+                        return true;
                     }
                 }
             }
@@ -380,6 +425,23 @@ int main()
         window.draw(dino.sprite);
         window.display();
     }
+}
+
+void gameRunning(sf::RenderWindow &window, int &numberLevel)
+{
+    if (startGame(window, numberLevel))
+    {
+        numberLevel++;
+        gameRunning(window, numberLevel);
+    }
+}
+
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Application");
+    int numberLevel = 1;
+
+    gameRunning(window, numberLevel);
 
     return 0;
 }
