@@ -13541,7 +13541,7 @@
   <object id="43" name="solid" x="7887.65" y="241.35" width="30.6718" height="41.8542"/>
   <object id="44" name="solid" x="7168.84" y="289.059" width="685.023" height="46.3776"/>
   <object id="46" name="solid" x="7919.6" y="351.881" width="48.71" height="16.5213"/>
-  <object id="192" name="easyEnemy" x="4535.43" y="282.455" width="28" height="37"/>
+  <object id="192" name="easyEnemy" x="4535.43" y="280.998" width="28" height="37"/>
   <object id="193" name="easyEnemy" x="5322.8" y="363.074" width="28" height="37"/>
   <object id="194" name="easyEnemy" x="5693.17" y="363.799" width="28" height="37"/>
   <object id="195" name="solid" x="5008.07" y="369.41" width="29.9743" height="28.9614"/>
