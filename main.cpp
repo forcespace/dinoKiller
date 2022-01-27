@@ -56,65 +56,17 @@ public:
         left, right, up, down, jump, stay
     } state;
 
+    float currentFrame;
+
     Player(sf::Image &image, const sf::String &Name, Level &lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
         state = stay;
         obj = lev.GetAllObjects();
+        currentFrame = 0;
 
-        if (name == "Player1")
+        if (name == "dino")
         {
             sprite.setTextureRect(sf::IntRect(0, 0, w, h));
-        }
-    }
-
-    void control()
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            state = left;
-            speed = 0.1;
-//                currentFrame += 0.011 * time;
-//                if (currentFrame > 4)
-//                {
-//                    currentFrame -= 2;
-//                }
-//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            state = right;
-            speed = 0.1;
-//                currentFrame += 0.011 * time;
-//                if (currentFrame > 4)
-//                {
-//                    currentFrame -= 2;
-//                }
-//                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-        }
-
-        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround))
-        {
-            state = jump;
-            dy = -.65;
-            onGround = false;//то состояние равно прыжок,прыгнули и сообщили, что мы не на земле
-////                currentFrame += 0.011 * time;
-////                if (currentFrame > 4)
-////                {
-////                    currentFrame -= 2;
-////                }
-////                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            state = down;
-            speed = 0.1;
-////                currentFrame += 0.011 * time;
-////                if (currentFrame > 4)
-////                {
-////                    currentFrame -= 2;
-////                }
-////                dino.sprite.setTextureRect(sf::IntRect(88 * int(currentFrame), 0, 88, 94));
         }
     }
 
@@ -167,7 +119,41 @@ public:
 
     void update(float time) override
     {
-        control();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            state = left;
+            speed = 0.1;
+            currentFrame += 0.011 * time;
+            if (currentFrame > 4)
+            {
+                currentFrame -= 2;
+            }
+            sprite.setTextureRect(sf::IntRect(44 * int(currentFrame), 0, 44, 47));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            state = right;
+            speed = 0.1;
+            currentFrame += 0.011 * time;
+            if (currentFrame > 4)
+            {
+                currentFrame -= 2;
+            }
+            sprite.setTextureRect(sf::IntRect(44 * int(currentFrame), 0, 44, 47));
+        }
+
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround))
+        {
+            state = jump;
+            dy = -.65;
+            onGround = false;
+            currentFrame += 0.011 * time;
+            if (currentFrame > 4)
+            {
+                currentFrame -= 2;
+            }
+            sprite.setTextureRect(sf::IntRect(44 * int(currentFrame), 0, 44, 47));
+        }
 
         switch (state)
         {
@@ -322,7 +308,7 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
 
     Object player = lvl.GetObject("player");
 
-    Player dino(heroImage, "Player1", lvl, player.rect.left, player.rect.top, 44, 47);
+    Player dino(heroImage, "dino", lvl, player.rect.left, player.rect.top, 44, 47);
 
     sf::Clock clock;
     sf::Clock gameTimeClock;
