@@ -19,22 +19,13 @@ sf::View getPlayerCoordinateForView(float x, float y)
     float tempX = x;
     float tempY = y;
 
-//    if (x < 57)
-//    {
-//        tempX = 57;
-//    }
-//    else if (y < 57)
-//    {
-//        tempY = 57;
-//    }
-//    else if (y > 57)
-//    {
-//        tempY = 57;
-//    }
-
-    if (y > 624)
+    if (x < 100)
     {
-        tempY = 624;
+        tempX = 100;
+    }
+    else if (y < 100)
+    {
+        tempY = 100;
     }
 
     view.setCenter(tempX, tempY);

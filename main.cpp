@@ -287,11 +287,6 @@ void changeLevel(Level &lvl, int &numberLevel)
         lvl.LoadFromFile("src/map2.tmx");
     }
 
-    else if (numberLevel == 3)
-    {
-        lvl.LoadFromFile("src/map3.tmx");
-    }
-
     else
     {
         lvl.LoadFromFile("src/map1.tmx");
@@ -352,7 +347,7 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
             }
         }
 
-        lifeBarPlayer.update(100);
+        lifeBarPlayer.update(70);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
         {
@@ -362,6 +357,7 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
         {
+            numberLevel = 0;
             return true;
         }
 
@@ -387,6 +383,7 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
                     {
                         (*it)->x = dino.x - (*it)->w;
                         (*it)->dx = 0;
+                        numberLevel = 0;
                         return true;
                     }
 
@@ -394,6 +391,7 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
                     {
                         (*it)->x = dino.x + dino.w;
                         (*it)->dx = 0;
+                        numberLevel = 0;
                         return true;
                     }
                 }
