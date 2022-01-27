@@ -128,7 +128,7 @@ public:
             {
                 currentFrame -= 2;
             }
-            sprite.setTextureRect(sf::IntRect(44 * int(currentFrame), 0, 44, 47));
+            sprite.setTextureRect(sf::IntRect(44 * int(currentFrame) + 44, 0, -44, 47));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
