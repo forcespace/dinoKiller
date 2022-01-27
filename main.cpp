@@ -3,7 +3,6 @@
 #include <sstream>
 #include "src/view.h"
 #include "src/level.h"
-#include "src/LifeBar.h"
 #include <vector>
 #include <list>
 
@@ -328,8 +327,6 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
     sf::Clock clock;
     sf::Clock gameTimeClock;
 
-    LifeBar lifeBarPlayer;
-
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
@@ -346,8 +343,6 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
                 window.close();
             }
         }
-
-        lifeBarPlayer.update(70);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
         {
@@ -419,7 +414,6 @@ bool startGame(sf::RenderWindow &window, int &numberLevel)
             window.draw((*it)->sprite);
         }
 
-        lifeBarPlayer.draw(window);
         window.draw(dino.sprite);
         window.display();
     }
